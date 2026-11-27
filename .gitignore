@@ -1,0 +1,7 @@
+node_modules
+dist
+jwstudy.html
+# 이 PC의 사용자가 강사인지 학습자인지: PC마다 달라서 올리지 않는다
+.jwstudy-role
+*.local
+.DS_Store
