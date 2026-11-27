@@ -32,7 +32,9 @@ npm run dev
 | 화면 | 주소 끝 | 내용 |
 | --- | --- | --- |
 | 길잡이 | `#guide` | 역할 주기, 일곱 단계, 프롬프트 모음, 확인 항목 |
-| 이번 주 | `#week` | 주차별 과제와 그 주의 제출, 피드백, 질문, 프롬프트 기록 |
+| 이번 주 | `#week` | 주차별 과제와 자료, 그 주의 제출, 피드백, 질문, 프롬프트 기록 |
+| JS 기초 | `#js` | 주차별 자바스크립트 문법 21개. 설명, 예제, 콘솔에서 해 보기, 연습 문제 |
+| 시연 | `#demos` | 1~8주차 시연 코드를 단계별로 재생하고, 완성된 코드가 동작하는 결과를 보여 줌 |
 | 기록 | `#notes` | 개념 사전, 전체 질문함, 전체 프롬프트 기록 |
 | 커리큘럼 | `#curriculum` | 강사용 12주 계획, 점검, 평가 기준 |
 
@@ -73,7 +75,10 @@ push는 스킬이 매번 확인을 받은 뒤에 합니다.
 | `index.html` | 화면이 그려질 빈 자리(`#root`)와 글꼴 링크 |
 | `src/main.jsx` | `App` 을 `#root` 에 그리는 시작점 |
 | `src/App.jsx` | 위쪽 메뉴와 화면 전환 |
-| `src/pages/` | 화면 네 개: `Guide`, `ThisWeek`, `Notes`, `Curriculum` |
+| `src/pages/` | 화면 여섯 개: `Guide`, `ThisWeek`, `JsBasics`, `Demos`, `Notes`, `Curriculum` |
+| `src/data/lessons.js` | JS 기초의 글 내용 |
+| `src/data/demos.js` | 시연의 단계별 코드와 설명. 마지막 단계는 `src/demos/`의 실제 파일을 그대로 보여 줍니다 |
+| `src/demos/` | 시연 코드. 결과 화면에서 실제로 동작하는 컴포넌트 |
 | `src/components/` | 프롬프트 상자, 단계 카드, 질문 목록 같은 화면 조각 |
 | `src/data/guide.js` | 길잡이의 글 내용 |
 | `src/data/curriculum.js` | 커리큘럼의 글 내용. 주차·점검·평가 기준 |

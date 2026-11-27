@@ -1,10 +1,12 @@
-import { useState } from 'react';
 import PromptLog from '../components/PromptLog.jsx';
 import QuestionList from '../components/QuestionList.jsx';
 import RichText from '../components/RichText.jsx';
+import WeekStrip from '../components/WeekStrip.jsx';
 import { weeks } from '../data/curriculum.js';
-import { currentWeek, weekRangeText } from '../lib/weeks.js';
-import { instructorWeek, learnerWeek, promptsOf, questionsOf, settings, weekStatus } from '../store/records.js';
+import { demos } from '../data/demos.js';
+import { lessons } from '../data/lessons.js';
+import { weekRangeText } from '../lib/weeks.js';
+import { instructorWeek, learnerWeek, promptsOf, questionsOf, settings } from '../store/records.js';
 
 /**
  * 주소 글자가 링크로 걸어도 되는 웹 주소인지 확인한다.
@@ -16,17 +18,16 @@ function isWebUrl(text) {
 }
 
 /**
- * 이번 주 화면. 한 주의 과제와 그 주에 오간 기록(제출, 프롬프트, 질문, 피드백)을 한곳에서 본다.
- * 입력: 없음 (기록은 store/records.js 가 저장소 파일에서 읽는다)
- * 출력: 주차 띠와 선택한 주의 과제·기록
+ * 이번 주 화면. 한 주의 과제, 자료, 그 주에 오간 기록(제출, 프롬프트, 질문, 피드백)을 한곳에서 본다.
+ * 입력: week - 선택된 주차, onWeekChange(week) - 주차를 바꾸는 함수
+ * 출력: 주차 띠와 선택한 주의 과제·자료·기록
  */
-export default function ThisWeek() {
-  const nowWeek = currentWeek(settings.startDate, weeks.length);
-  const [selected, setSelected] = useState(nowWeek);
-
+export default function ThisWeek({ week: selected, onWeekChange }) {
   const week = weeks[selected - 1];
   const { submission } = learnerWeek(selected);
   const { feedback, sessionNote, passed, passedAt } = instructorWeek(selected);
+  const weekLessons = lessons.filter((lesson) => lesson.week === selected);
+  const demo = demos.find((item) => item.week === selected);
 
   return (
     <div className="wrap">
@@ -48,24 +49,7 @@ export default function ThisWeek() {
 
       <section>
         <h2>주차</h2>
-        <div className="week-strip" role="group" aria-label="주차 선택">
-          {weeks.map((item) => (
-            <button
-              key={item.week}
-              type="button"
-              className={`week-cell is-${weekStatus(item.week)}`}
-              aria-pressed={item.week === selected}
-              onClick={() => setSelected(item.week)}
-            >
-              {item.week}
-              {item.week === nowWeek && settings.startDate && <span className="week-now">오늘</span>}
-            </button>
-          ))}
-        </div>
-        <p className="legend">
-          <span className="legend-item is-submitted">제출</span>
-          <span className="legend-item is-passed">통과</span>
-        </p>
+        <WeekStrip selected={selected} onSelect={onWeekChange} />
       </section>
 
       <section>
@@ -87,6 +71,24 @@ export default function ThisWeek() {
           <dd>
             <RichText text={week.pass} />
           </dd>
+        </dl>
+      </section>
+
+      <section>
+        <h2>이번 주 자료</h2>
+        <dl className="stage-meta">
+          <dt>
+            <a href="#js">JS 기초</a>
+          </dt>
+          <dd>
+            {weekLessons.length > 0
+              ? weekLessons.map((lesson) => lesson.title).join(', ')
+              : '새 개념이 없습니다. 지난 주차를 복습합니다.'}
+          </dd>
+          <dt>
+            <a href="#demos">시연</a>
+          </dt>
+          <dd>{demo ? demo.title : '시연이 없습니다. 학습자 코드에서 시연 거리를 고릅니다.'}</dd>
         </dl>
       </section>
 

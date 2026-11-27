@@ -10,6 +10,10 @@
   --accent-soft: #e4ecfb;
   --code-bg: #eaeff4;
   --ok: #1d7a4f;
+  --danger: #b3261e;
+  /* 시연의 다크 모드 미리보기: 사이트 테마와 무관하게 늘 어두운 상자라서 두 테마에서 같은 값 */
+  --demo-dark-bg: #10161d;
+  --demo-dark-fg: #e5ebf1;
   /* 브라우저 개발자 도구의 박스 모델 색 */
   --bm-margin: #f9cc9d;
   --bm-border: #fbe3a0;
@@ -32,6 +36,7 @@
     --accent-soft: #1c2a47;
     --code-bg: #1e2a36;
     --ok: #5fc493;
+    --danger: #ff8a80;
     --bm-margin: #6e4a22;
     --bm-border: #6b5c22;
     --bm-padding: #325c38;
@@ -63,7 +68,8 @@ h2 { font-size: 1.55rem; font-weight: 700; }
 h3 { font-size: 1.2rem; font-weight: 500; }
 p { margin: 0; }
 a { color: var(--accent); }
-code, pre { font-family: var(--font-mono); }
+/* 글자 합치기를 끈다: 코드 글꼴이 => 를 ⇒ 한 글자로 그리면 배우는 사람이 그 기호를 그대로 치려고 한다 */
+code, pre { font-family: var(--font-mono); font-variant-ligatures: none; }
 code { background: var(--code-bg); padding: 0.1em 0.35em; border-radius: 4px; font-size: 0.88em; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
@@ -215,4 +221,70 @@ td.num { white-space: nowrap; font-variant-numeric: tabular-nums; }
 .glossary dt { font-weight: 600; }
 .glossary dd { margin: 0; font-size: 0.94rem; }
 @media (max-width: 720px) { .glossary { grid-template-columns: 1fr; } }
+
+/* 버튼 */
+.btn { font: inherit; font-size: 0.9rem; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 5px 14px; cursor: pointer; }
+.btn:hover { border-color: var(--accent); }
+.btn:disabled { color: var(--muted); cursor: not-allowed; border-color: var(--line); }
+.btn-primary { color: var(--surface); background: var(--accent); border-color: var(--accent); }
+.hint { font-size: 0.86rem; color: var(--muted); }
+.hint code { margin-right: 4px; }
+
+/* JS 기초 화면 */
+.lesson-before { font-size: 0.94rem; color: var(--muted); }
+.lesson-before b { color: var(--ink); font-weight: 600; margin-right: 4px; }
+.lesson-part { display: flex; flex-direction: column; gap: 8px; border-top: 1px dashed var(--line); padding-top: 14px; }
+.lesson-part .checklist-title { margin-bottom: 0; }
+.reveal summary { cursor: pointer; color: var(--accent); font-size: 0.9rem; width: fit-content; }
+.reveal[open] summary { margin-bottom: 6px; }
+.reveal p { font-size: 0.94rem; }
+.answer { margin: 0; padding: 10px 12px; font-size: 0.86rem; line-height: 1.65; background: var(--code-bg); border-radius: 6px; overflow-x: auto; }
+
+/* 시연 재생기 */
+.player { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--surface); }
+.player-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 12px; background: var(--code-bg); font-size: 0.82rem; }
+.player-file { font-family: var(--font-mono); }
+.player-count { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
+/* 코드가 짧은 단계와 긴 단계를 오갈 때 아래 버튼이 덜 출렁이도록 최소 높이를 둔다 */
+.player-code { margin: 0; padding-block: 10px; font-size: 0.84rem; line-height: 1.7; overflow-x: auto; min-height: 12em; }
+.line { display: block; width: max-content; min-width: 100%; padding-right: 14px; white-space: pre; border-left: 3px solid transparent; }
+.line.is-hl { background: var(--accent-soft); border-left-color: var(--accent); }
+.line-no { display: inline-block; width: 2.4em; padding-right: 0.9em; text-align: right; color: var(--muted); user-select: none; }
+.player-note { padding: 12px 14px; border-top: 1px solid var(--line); min-height: 5em; }
+.player-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 14px; border-top: 1px solid var(--line); }
+.player-dots { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
+.player-dot { width: 14px; height: 14px; padding: 0; border-radius: 50%; border: 1px solid var(--muted); background: transparent; cursor: pointer; }
+.player-dot[aria-current="step"] { background: var(--accent); border-color: var(--accent); }
+
+/* 시연 결과: 시연 코드의 className 과 짝을 이룬다 */
+.demo-stage { border: 1px dashed var(--line); border-radius: 8px; padding: 18px; background: var(--bg); }
+.demo-stage button, .demo-stage select, .demo-stage input:not([type="checkbox"]) {
+  font: inherit; font-size: 0.9rem; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 6px; padding: 4px 12px; max-width: 100%;
+}
+.demo-stage button { cursor: pointer; }
+.demo-stage button:hover:not(:disabled) { border-color: var(--accent); }
+.demo-stage button:disabled { color: var(--muted); cursor: not-allowed; }
+.demo-stage button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.demo-preview { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 14px; border-radius: 6px; background: var(--surface); color: var(--ink); }
+/* 다크 모드 미리보기는 사이트 테마와 상관없이 늘 어두워야 하므로 두 테마에서 같은 값을 쓴다 */
+.demo-preview.is-dark { background: var(--demo-dark-bg); color: var(--demo-dark-fg); }
+@media (prefers-reduced-motion: no-preference) { .demo-preview { transition: background 0.2s, color 0.2s; } }
+.demo-list { margin: 0; padding-left: 1.2em; display: flex; flex-direction: column; gap: 6px; }
+.demo-list label { display: inline-flex; align-items: center; gap: 8px; }
+.demo-list li > button { margin-left: 8px; padding: 0 8px; font-size: 0.8rem; }
+.demo-list .is-done { text-decoration: line-through; color: var(--muted); }
+.demo-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.demo-row > * { min-width: 0; }
+@media (max-width: 600px) { .demo-row { grid-template-columns: 1fr; } }
+.demo-card { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+.demo-card h4 { margin: 0; font-family: var(--font-display); font-size: 1.05rem; }
+.demo-card p { color: var(--muted); font-size: 0.88rem; }
+.demo-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.demo-badge { margin-left: 4px; font-size: 0.75rem; font-weight: 600; padding: 1px 7px; border-radius: 4px; color: var(--bm-ink); }
+.demo-badge.is-out { background: var(--bm-margin); }
+.demo-badge.is-low { background: var(--bm-border); }
+.demo-date { font-family: var(--font-mono); font-size: 0.84rem; color: var(--accent); }
+.demo-error { color: var(--danger); }
+
 footer { padding-block: 28px 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.86rem; }
